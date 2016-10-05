@@ -1,1 +1,2 @@
-# FIT2076_ver2
+# FIT2076
+Assignment 2
