@@ -4,6 +4,7 @@
 	require('FPDF/fpdf.php');
 	include 'functions.php';
 	login("Property.php");	
+
 ?>
 <html>
 	<body>		
