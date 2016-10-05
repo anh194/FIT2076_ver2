@@ -7,8 +7,7 @@
 ?>
 <html>
 	<body>		
-		<a href = "PropModify.php?Action=Create">Create New</a> <br/>
-		<a href = "DisplaySource.php?filename=Property.php">Display Source</a><br>
+		<input type = "button" value = "New Property" onclick="window.location.href='PropModify.php?Action=Create';"/>	
 		<!--Properties Table-->
 		<table border = "1">
 			<tr>
@@ -77,5 +76,10 @@
 			oci_close($conn);
 			?>
 		</table>
+		<p>			
+			<a href="DisplaySource.php?filename=Property.php">		
+				<img src="buttons/property_button.PNG" alt="Property Source Code Button" width = "200px" height = "30px"/>			
+			</a>		
+		</p>
 	</body>
 </html>
