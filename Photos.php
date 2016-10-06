@@ -9,15 +9,24 @@
 <html>
 	<body>
 		<?php
-		
-		if (isset($_POST['photosToDelete']))
+		include("functions.php");
+		if (login("Photos.php"))
 		{
-			deleteImages($_POST['photosToDelete']);
+			if (isset($_POST['photosToDelete']))
+			{
+				deleteImages($_POST['photosToDelete']);
+			}
+			
+			showAllImages();
 		}
-		
-		showAllImages();
 		oci_close($conn);
 		?>
+		
+		<p>	
+			<a href="DisplaySource.php?filename=Photos.php">
+				<img src="buttons/images_button.PNG" alt="Source Code Button" width = "200px" height = "30px"/>	
+			</a>
+		</p>
 	</body>
 </html>
 

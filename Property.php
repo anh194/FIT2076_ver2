@@ -30,26 +30,32 @@
 			oci_execute($propStmt);
 			
 			//display each property
+			$numResults = 0;
 			while ($propRow = oci_fetch_array ($propStmt))
 			{
+				$numResults++;
 				$address = 
 					$propRow["PROP_STREET"]."<br/>".
 					$propRow["PROP_CITY"].", ".
 					$propRow["PROP_STATE"].", ".
 					$propRow["PROP_POSTCODE"].", ".
 					$propRow["PROP_COUNTRY"]; 
-				$typeQuery = "SELECT ptype_name FROM PropertyType WHERE PTYPE_ID = ".$propRow["PROP_TYPE"];
-				$typeStmt = oci_parse($conn,$typeQuery);
-				oci_execute($typeStmt);
-				if ($typeRow = oci_fetch_array($typeStmt))
+				if (isset($propRow["PROP_TYPE"]))
 				{
-					$propType = $typeRow["PTYPE_NAME"];
+					$typeQuery = "SELECT ptype_name FROM PropertyType WHERE PTYPE_ID = ".$propRow["PROP_TYPE"];
+					$typeStmt = oci_parse($conn,$typeQuery);
+					oci_execute($typeStmt);
+					if ($typeRow = oci_fetch_array($typeStmt))
+					{
+						$propType = $typeRow["PTYPE_NAME"];
+					}
+					
+					oci_free_statement($typeStmt);
 				}
 				else 
 				{
-					$propType = "none";
+					$propType = "None";
 				}
-				oci_free_statement($typeStmt);
 				?>
 				<tr>
 					<td><?php echo $propRow["PROP_ID"]; ?></td>
@@ -64,10 +70,23 @@
 				</tr>
 				<?php
 			}
+			?>		
+				<form method = "post" action="search.php">		
+					<input type="text" name="keyword" />		
+    				<input type="submit" value="Search" />		
+				</form>		
+			<?php
 			oci_free_statement($propStmt);
 			oci_close($conn);
 		?>
 		</table>
+		<br/>
+		<?php 
+		if ($numResults == 0)
+		{
+			echo "No properties found";
+		}
+		?>
 		<p>	
 			<a href="DisplaySource.php?filename=Property.php">
 				<img src="buttons/property_button.PNG" alt="Property Source Code Button" width = "200px" height = "30px"/>	

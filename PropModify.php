@@ -66,10 +66,50 @@
 	}
 	oci_close($conn);
 	?>
+	
+	<p>	
+		<a href="DisplaySource.php?filename=PropModify.php">
+			<img src="buttons/property_button.PNG" alt="Property Source Code Button" width = "200px" height = "30px"/>	
+		</a>
+	</p>
 </body>
 </html>
 
 <!-- FUNCTIONS -->
+<script language="JavaScript">
+
+	function VerifyDataEntry(propertyForm)
+    {
+    	if(propertyForm.propaddress.value == "")
+        {
+        	alert("Please enter a value for the \"Address\" field");
+            propertyForm.propaddress.focus();
+            return false;
+        }
+
+        if(propertyForm.propcountry.value == "")
+        {
+        	alert("Please enter a value for the \"Country\" field");
+            propertyForm.propcountry.focus();
+            return false;
+        }
+
+       	if(propertyForm.propstate.value == "")
+        {
+        	alert("Please enter a value for the \"State\" field");
+            propertyForm.propstate.focus();
+            return false;
+        }
+
+       	if(propertyForm.proppostcode.value == "")
+        {
+        	alert("Please enter a value for the \"Postcode\" field");
+            propertyForm.proppostcode.focus();
+            return false;
+        }
+    }
+
+</script>
 
 <?php	
 
@@ -84,11 +124,12 @@
 			PROP_STATE = '$_POST[propstate]',
 			PROP_CITY = '$_POST[propcity]',
 			PROP_POSTCODE = '$_POST[proppostcode]',
-			PROP_TYPE = '$_POST[PropertyTypeList]',
+			PROP_TYPE = $_POST[PropertyTypeList],
 			PROP_BEDROOMS = '$_POST[propbedrooms]',
 			PROP_BATHROOMS = '$_POST[propbathrooms]',
 			PROP_DESCRIPTION = '$_POST[propdescription]'
 			WHERE prop_id = ".$propid;
+		echo $query;
 		$stmt = oci_parse($conn,$query);
 		oci_execute($stmt);
 		oci_free_statement($stmt);
@@ -100,15 +141,17 @@
 		oci_free_statement($stmt);
 
 		//for each checked feature
-		foreach($_POST['feats'] as $feature)
+		if (isset($_POST['feats']))
 		{
-			//add property feature
-			$query = "INSERT INTO PropertyFeature VALUES (".$propid.",".$feature.")";
-			$stmt = oci_parse($conn,$query);
-			oci_execute($stmt);	
-			oci_free_statement($stmt);
+			foreach($_POST['feats'] as $feature)
+			{
+				//add property feature
+				$query = "INSERT INTO PropertyFeature VALUES (".$propid.",".$feature.")";
+				$stmt = oci_parse($conn,$query);
+				oci_execute($stmt);	
+				oci_free_statement($stmt);
+			}
 		}
-
 		header("Location: Property.php");
 		exit;
 	}
@@ -116,14 +159,17 @@
 	function Del()
 	{
 		global $propid;
-		
 		?>
 		<center>
 		<script language="javascript"> 
-			var text =  "Are you sure you want to delete <?php echo $propid;?>?"
+			var text =  "Are you sure you want to delete this property?"
 			if(window.confirm(text))
 			{
 				window.location='PropModify.php?propid=<?php echo $propid; ?>&Action=ConfirmDelete';
+			}
+			else
+			{
+				window.location='Property.php';
 			}
 		</script>
 		</center><?php
@@ -152,15 +198,15 @@
 			'$_POST[propstate]',
 			'$_POST[propcity]',
 			'$_POST[proppostcode]',
-			'$_POST[propstreet]',
-			'$_POST[proptype]',
-			'$_POST[propbedrooms]',
-			'$_POST[propbathrooms]',
+			'$_POST[propaddress]',
+			$_POST[PropertyTypeList],
+			$_POST[propbedrooms],
+			$_POST[propbathrooms],
 			'$_POST[propdescription]')";
 		$stmt = oci_parse($conn,$query);
 		oci_execute($stmt);
 		oci_free_statement($stmt);
-		
+		echo $query;
 		header("Location: Property.php");
 		exit;
 	}
@@ -200,7 +246,7 @@
 		}
 		
 		?>
-		<form method = "post" action = "PropModify.php?propid=<?php echo $propid;?>&Action=<?php echo $nextAction; ?>">
+		<form method = "post" action = "PropModify.php?propid=<?php echo $propid;?>&Action=<?php echo $nextAction; ?>" OnSubmit="return VerifyDataEntry(this)">
 			<h1>Property </h1>
 			<h2>Modify</h2>
 			
@@ -283,10 +329,11 @@
 		oci_execute($stmt);
 		?>
 		<select name="PropertyTypeList">
+			<option value="NULL" <?php if ($proptype == "") echo 'selected'; ?>>None</option>				
 			<?php
 			while ($ptypeRow = oci_fetch_array($stmt))
 			{
-				?>		
+				?>
 				<option value="<?php echo $ptypeRow["PTYPE_ID"]; ?>"
 					<?php if ($proptype == $ptypeRow["PTYPE_ID"]) echo 'selected';?>>
 					<?php echo $ptypeRow["PTYPE_NAME"];?>

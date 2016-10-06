@@ -65,6 +65,10 @@
 			oci_close($conn);
 		?>
 		</table>
-		 
+		 <p>	
+			<a href="DisplaySource.php?filename=customers.php">
+				<img src="buttons/client_button.PNG" alt="Source Code Button" width = "200px" height = "30px"/>	
+			</a>
+		</p>
 	</body>
 </html>

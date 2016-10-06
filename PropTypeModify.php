@@ -64,6 +64,14 @@
 		}
 	}
 	?>
+	
+	<p>	
+		<center>
+		<a href="DisplaySource.php?filename=PropTypeModify.php">
+			<img src="buttons/type_button.PNG" alt="Property Source Code Button" width = "200px" height = "30px"/>	
+		</a>
+		</center>
+	</p>
 </body>
 </html>
 

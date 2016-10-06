@@ -63,6 +63,13 @@
 		}
 	}
 	?>
+	<p>	
+		<center>
+		<a href="DisplaySource.php?filename=FeatModify.php">
+			<img src="buttons/prop_feat_button.PNG" alt="Source Code Button" width = "200px" height = "30px"/>	
+		</a>
+		</center>
+	</p>
 </body>
 </html>
 

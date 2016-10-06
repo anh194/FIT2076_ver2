@@ -37,5 +37,10 @@
 			}
 		?>
 		</table>
+		<p>	
+			<a href="DisplaySource.php?filename=Feature.php">
+				<img src="buttons/prop_feat_button.PNG" alt="Property Source Code Button" width = "200px" height = "30px"/>	
+			</a>
+		</p>
 	</body>
 </html>
