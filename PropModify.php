@@ -9,7 +9,7 @@
 	
 	if (isset($_GET["Action"]))
 	{
-		$_SESSION["Action"] = $_GET["Action"];
+		$_SESSION["PropModAction"] = $_GET["Action"];
 	}
 
 	if (isset ($_SESSION["propid"]))
@@ -17,9 +17,9 @@
 		$propid = $_SESSION["propid"];
 	}
 	
-	if (isset ($_SESSION["Action"]))
+	if (isset ($_SESSION["PropModAction"]))
 	{
-		$Action = $_SESSION["Action"];
+		$Action = $_SESSION["PropModAction"];
 	}
 	
 	include("connection.php");
@@ -44,6 +44,8 @@
 		{
 			case "Update": 
 				showPropertyForm();
+				showImageUpload();
+				showPropertyImages();
 				break;
 			case "ConfirmUpdate":
 				ConfirmUpdate();
@@ -385,4 +387,77 @@
 			<?php
 	}
 	
+	function showPropertyImages()
+	{
+		global $conn;
+		global $propid;
+		$imageQuery = "SELECT * FROM Photo WHERE photo_property = ".$propid;
+		$imageStmt = oci_parse($conn,$imageQuery);
+		oci_execute($imageStmt);
+		?>
+		<table cellpadding = 3>
+			<tr>
+				<td><b>ID</b></td>
+				<td><b>Photo</b></td>
+				<td><b>Delete</b></td>
+			</tr>
+			<?php
+			while ($imageRow = oci_fetch_array($imageStmt))
+			{
+				$file = $imageRow["PHOTO_PATH"];
+				?>
+				<tr>
+					<td>
+						<?php echo $imageRow["PHOTO_ID"];?>
+					</td>
+					<td>
+						<img src="<?php echo "property_images\\".$file; ?>" alt="Property Photo: <?php echo $file; ?>" width = "200px" height = "200px"/>
+					</td>
+					<td>
+						<a href="PhotoModify.php?photo=<?php echo $file; ?>&Action=Delete">Delete</a>
+					</td>
+				</tr>
+				<?php
+			}
+			?>
+		</table>
+		<?php
+	}
+	
+	function showImageUpload()
+	{
+		global $conn;
+		global $propid;
+		?>
+		<form method="post" enctype="multipart/form-data" action="PropModify.php">
+			<table border="0">
+				<tr>
+					<td><b>Select a file to upload:</b><br>
+					<input type="file" size="50" name="userfile">
+					</td>
+				</tr>
+					<tr>
+					<td><input type="submit" value="Upload File"> </td>
+				</tr>
+			</table>
+		</form>
+		
+		<?php
+		if (isset($_FILES["userfile"]["tmp_name"]))
+		{
+			$filename = $_FILES["userfile"]["name"];
+			$upfile = "property_images/".$filename;
+			if (move_uploaded_file($_FILES["userfile"]["tmp_name"],$upfile))
+			{
+				$insertImageQuery = "INSERT INTO Photo VALUES(photo_seq.nextval,".$propid.",'".$filename."')";
+				$InsertImageStmt = oci_parse($conn,$insertImageQuery);
+				oci_execute($InsertImageStmt);
+				oci_free_statement($InsertImageStmt);
+			}
+			else
+			{
+				echo "ERROR: Could not move file into directory";
+			}
+		}
+	}
 ?>

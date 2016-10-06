@@ -4,11 +4,10 @@
 	require('FPDF/fpdf.php');
 	include 'functions.php';
 	login("Property.php");	
-
 ?>
 <html>
 	<body>		
-		<input type = "button" value = "New Property" onclick="window.location.href='PropModify.php?Action=Create';"/>	
+		<input type = "button" value = "New Property" onclick="window.location.href='PropModify.php?Action=Create';"/>
 		<!--Properties Table-->
 		<table border = "1">
 			<tr>
@@ -65,20 +64,15 @@
 				</tr>
 				<?php
 			}
-				?>
-				<form method = "post" action="search.php">
-					<input type="text" name="keyword" />
-    				<input type="submit" value="Search" />
-				</form>
-			<?php
 			oci_free_statement($propStmt);
 			oci_close($conn);
-			?>
+		?>
 		</table>
-		<p>			
-			<a href="DisplaySource.php?filename=Property.php">		
-				<img src="buttons/property_button.PNG" alt="Property Source Code Button" width = "200px" height = "30px"/>			
-			</a>		
+		<p>	
+			<a href="DisplaySource.php?filename=Property.php">
+				<img src="buttons/property_button.PNG" alt="Property Source Code Button" width = "200px" height = "30px"/>	
+			</a>
 		</p>
+		
 	</body>
 </html>
