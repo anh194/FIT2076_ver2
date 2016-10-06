@@ -23,7 +23,6 @@
 				<th>City</th>
 				<th>Postcode</th>
 				<th>Street</th>
-				<th>Street</th>
 				<th>Edit</th>
 				<th>Delete</th>
 			</tr>
@@ -53,16 +52,13 @@
 				echo "<td>$custRow[CUST_POSTCODE]</td>";
 				echo "<td>$custRow[CUST_STREET]</td>";
 				
-				echo "<td><a href = \"CustModify.php?custid=$custRow[CUST_ID]&Action=View\">View</a></td>";
 				echo "<td><a href = \"CustModify.php?custid=$custRow[CUST_ID]&Action=Update\">Edit</a></td>";
 				echo "<td><a href = \"custModify.php?custid=$custRow[CUST_ID]&Action=Delete\">Delete </a></td>";
 				echo "</tr>";
 			}
 		?>
-			<a href = "AddClient.php">Add </a><br>
-			<a href = "Email.php">Email </a><br>
-			<a href = "pdf.php">PDF </a><br>
-			<a href = "index.html">Back to main menu</a>
+			<a href = "AddClient.php">Add </a>
+			<a href = "Email.php">Email </a>
 		<?php
 			oci_free_statement($custStmt);
 			//oci_free_statement($typeStmt);
