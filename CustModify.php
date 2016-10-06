@@ -46,6 +46,13 @@
 	}
 	oci_close($conn);
 	?>
+	<p>	
+		<center>
+		<a href="DisplaySource.php?filename=CustModify.php">
+			<img src="buttons/client_button.PNG" alt="Source Code Button" width = "200px" height = "30px"/>	
+		</a>
+		</center>
+	</p>
 </body>
 </html>
 

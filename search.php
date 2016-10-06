@@ -80,8 +80,10 @@
     		$propStmt = oci_parse($conn,$result);
 			oci_execute($propStmt);
 
+			$numResults = 0;
 			while ($propRow = oci_fetch_array ($propStmt))
 			{
+				$numResults++;
 				$address = 
 					$propRow["PROP_STREET"]."<br/>".
 					$propRow["PROP_CITY"].", ".
@@ -126,5 +128,12 @@
 			oci_close($conn);
 			?>
 		</table>
+		<br/>
+		<?php
+		if ($numResults == 0)
+		{
+			echo "No properties found";
+		}
+		?>
 	</body>
 </html>
